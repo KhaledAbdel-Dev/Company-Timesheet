@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+<head>
+    <title>XYZ Co</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+
+    <div class="page-header text-center">
+        <h1>XYZ Company Employee Timesheet</h1>
+        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+    </div>
+
+    <div class="row">
+
+        <!-- LOCAL INFORMATION -->
+        <div class="col-sm-6">
+            <div class="well">
+                <h3><span class="fa fa-user"></span> Local</h3>
+
+                <% if (user.local.email) { %>
+                    <p>
+                        <strong>id</strong>: <%= user._id %><br>
+                        <strong>email</strong>: <%= user.local.email %><br>
+                        <strong>password</strong>: <%= user.local.password %>
+                    </p>
+
+                    <a href="/unlink/local" class="btn btn-default">Unlink</a>
+                <% } else { %>
+                    <a href="/connect/local" class="btn btn-default">Connect Local</a>
+                <% } %>
+
+            </div>
+        </div>
+        <div class="col-sm-6">
+          <h2> Dashboard </h2>
+    <ul class="display">
+
+        <% for(var i = 0; i < times.length; i++) {%>
+            <li class="display">
+                <span><%= times[i].shift %></span>:
+                <span><%= times[i].name %></span>:
+                <span><%= times[i].time %></span>
+            </li>
+        <% } %>
+    </ul>        
+        <% if (user.local.email) { %>
+          <form action="/times" method="POST">
+            <select name="shift" id="clock">
+                <option value="0">Select Shift Start/End</option>
+                <option value="TIME IN">TIME IN</option>
+                <option value="TIME OUT">TIME OUT</option>
+            </select>
+            <input type="text" value="<%= user.local.email %>" name="name">
+            <input type="time" placeholder="Time" min="1:00" max="24:00" name="time">
+            <button id="submit-button" type="submit">Submit</button>
+        </form>
+        </div>
+        <% } %>
+
+</div>
+<div>
+  <h2>Manager Tools</h2>
+  <p>
+      Edit an employees time stamp
+  </p>
+  <form>
+      <select name="shift" id="clockM">
+          <option value="0">Select Shift Start/End</option>
+          <option value="TIME IN">TIME IN</option>
+          <option value="TIME OUT">TIME OUT</option>
+      </select>
+      <input type="text" id="nameM" placeholder="Employee Name" name="name">
+      <input type="time" id="timeM" placeholder="Time" min="1:00" max="24:00" name="time">
+  </form>
+  <button type="button" id="update-button">Submit Changes</button>
+</div>
+  <button id="delete-button">Clear Board</button>
+<script src="main.js"></script>
+
+</body>
+</html>
